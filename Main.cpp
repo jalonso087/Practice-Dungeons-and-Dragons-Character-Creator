@@ -8,6 +8,8 @@
 #include <iostream>
 #include <random>
 
+
+
 class character
 {
 
@@ -68,12 +70,23 @@ int statGenerator(void)
     return 0;
 }
 
-int random_1to6 = rand() % 10 + 1;
+int random_num(int start, int max)
+{
+    clock_t current_time = clock();
+    srand ((unsigned)clock());
+
+    int random = start + rand() % (max);
+
+    return random;
+
+}
+
+int random_1to6 = 1 + rand() % 9;
 
 int main(void)
 {
     std::cout << "Dungeons and Dragons Character Creator" << std::endl;
     //code starts here
-    std::cout << random_1to6 + random_1to6 + random_1to6;
+    std::cout << random_num(1, 6) << " " << random_num(1,6) << " " << random_num(1,6);
     return 0;
 }
