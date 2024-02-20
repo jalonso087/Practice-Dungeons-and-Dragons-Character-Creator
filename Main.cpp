@@ -70,7 +70,7 @@ int statGenerator(void)
     return 0;
 }
 
-int random_num(int start, int max)
+int random_num(int start, int max)`
 {
     clock_t current_time = clock();
     srand ((unsigned)clock());
