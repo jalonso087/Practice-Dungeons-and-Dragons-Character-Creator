@@ -8,6 +8,7 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include <fstream>
 
 class character
 {
@@ -454,6 +455,51 @@ void print_character(void)
 
 }
 
+class save_load : public character
+{
+private:
+    
+
+protected:
+    
+
+public:
+
+    bool save_file = false;
+    bool load_file = false;
+
+    void save(void)
+    {
+        std::ofstream MyFile("character_data.txt");
+
+        MyFile
+            << character::character_name
+            << character::character_level
+            << character::hp
+            << character::statStr
+            << character::statDex
+            << character::statCon
+            << character::statInt
+            << character::statWis
+            << character::statCha;
+
+        MyFile.close();
+    }
+
+    void load(void)
+    {
+        std::string text;
+
+        std::ifstream MyFile("character_data.txt");
+
+        while (getline(MyFile, text))
+        {
+            std::cout << text;
+        }
+    }
+
+};
+
 int main(void)
 {   
     srand(time(NULL));  //for proper randomization in the random_num function calls
@@ -461,24 +507,34 @@ int main(void)
     std::cout << "Dungeons and Dragons Character Creator" << std::endl;
 
     character player;
+    save_load file;
 
     //std::string character_name;
+    if(file.load_file = false)
+    {
 
-    player.character_level = 1;
-   
-    player.stat_generator();
+        player.character_level = 1;
 
-    player.race = choose_race();
+        player.stat_generator();
 
-    player.race_stat_changer(player.race);
+        player.race = choose_race();
 
-    player.player_class = player.choose_class();
+        player.race_stat_changer(player.race);
 
-    player.hp = set_hp(player.player_class);
+        player.player_class = player.choose_class();
 
-    player.character_name = choose_character_name();
+        player.hp = set_hp(player.player_class);
+
+        player.character_name = choose_character_name();
+
+    }
 
     print_character();
+
+    //save load implementation test
+
+    file.load();
+    
 
     return 0;
 }
