@@ -1,13 +1,22 @@
 /****************************************************
  * D&D Character Generator                          *
  * Javier Alonso                                    *
- * 2/15/2024                                        *
- * v0.01                                            *
+ * 2/15/2024 - 2/21/24                              *
+ * v0.02                                            *
 *****************************************************/
+/////////////////////////////////////////////////////
+//                      To-do
+// /////////////////////////////////////////////////
+//1. Add an if else block to race choice to prevent invalid numerical entries
+//2. Continue converting variables and functions to static where possible
+//3. Disable player choosing class that isn't shown on screen
+//4. Long-term: Move everything except main() to a different file to avoid clutter
 
 #include <iostream>
 #include <random>
 #include <string>
+
+//using static prepend often since we do not need the linker to look for the variable/function definitions elsewhere
 
 class character
 {
@@ -174,15 +183,21 @@ public:
         return 0;
     }
 
-    int race_stat_changer(int race)
+    static int race_stat_changer(int race)
     {
-        int* ptrDex;
-        int* ptrCha;
-        int* ptrCon;
-        int* ptrStr;
-        int* ptrInt;
-        int* ptrWis;
+        //int* ptrDex;
+        //int* ptrCha;
+        //int* ptrCon;
+        //int* ptrStr;
+        //int* ptrInt;
+        //int* ptrWis;
 
+        static int* ptrDex,
+                  * ptrCha,
+                  * ptrCon,
+                  * ptrStr,
+                  * ptrInt,
+                  * ptrWis;
 
         std::cout
             << "Altering stats as necessary..."
@@ -255,10 +270,11 @@ public:
         return 0;
     }
 
-    int choose_class(void)
+    static int choose_class(void)
     {
 
         bool choosing = true;
+        int choice;
 
         while (choosing)
         {
@@ -286,7 +302,7 @@ public:
             std::cout
                 << "Selection: ";
 
-            int choice;
+            
 
             std::cin >> choice;
 
@@ -431,6 +447,7 @@ void print_character(void)
 
     std::cout
         << "Here's your character: \n\n"
+        << "\nName: "
         << character::character_name
         << "\nLevel: "
         << character::character_level
