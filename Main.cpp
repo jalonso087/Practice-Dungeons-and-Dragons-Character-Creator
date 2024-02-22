@@ -9,7 +9,7 @@
 // /////////////////////////////////////////////////
 //1. Add an if else block to race choice to prevent invalid numerical entries
 //2. Continue converting variables and functions to static where possible
-//3. Disable player choosing class that isn't shown on screen
+//3. COMPLETE - Disable player choosing class that isn't shown on screen
 //4. Long-term: Move everything except main() to a different file to avoid clutter
 
 #include <iostream>
@@ -26,6 +26,22 @@ private:
 protected:
 
 public:
+
+    enum Race 
+    {
+        HUMAN = 1,
+        ELF,
+        DWARF,
+        HALFLING
+    };
+
+    enum Class
+    {
+        WARRIOR = 1,
+        THIEF,
+        CLERIC,
+        WIZARD
+    };
 
     static int  character_level, 
                 race, 
@@ -205,12 +221,12 @@ public:
 
         switch (race)
         {
-        case(1):
+        case(HUMAN):
             std::cout
                 << "\nHumans require no stat changes."
                 << std::endl;
             break;
-        case(2):
+        case(ELF):
             ptrDex = &statDex;
             ptrCha = &statCha;
             ptrCon = &statCon;
@@ -228,7 +244,7 @@ public:
             statCha += 1;
             statCon -= 2;
             break;
-        case(3):
+        case(DWARF):
             ptrStr = &statStr;
             ptrCon = &statCon;
             ptrInt = &statInt;
@@ -250,7 +266,7 @@ public:
             statInt -= 1;
             statCha -= 1;
             break;
-        case(4):
+        case(HALFLING):
             ptrStr = &statStr;
             ptrDex = &statDex;
             std::cout
@@ -275,6 +291,10 @@ public:
 
         bool choosing = true;
         int choice;
+        bool validWarrior = true;
+        bool validThief = false;
+        bool validCleric = false;
+        bool validWizard = false;
 
         while (choosing)
         {
@@ -283,18 +303,21 @@ public:
                 << "1. Warrior\n";
             if (statDex > 10)
             {
+                validThief = true;
                 std::cout
                     << "2. Thief\n";
             }
 
             if (statWis > 10 && statCha > 10)
             {
+                validCleric = true;
                 std::cout
                     << "3. Cleric\n";
             }
 
             if (statInt > 10)
             {
+                validWizard = true;
                 std::cout
                     << "4. Wizard\n";
             }
@@ -306,16 +329,29 @@ public:
 
             std::cin >> choice;
 
-            if (choice < 5 && choice > 0)
-            {
-                choosing = false;
-                return choice;
-            }
-            else
+            
+             if (choice == THIEF && validThief == false)
             {
                 std::cout
                     << "\n\nInvalid entry.\n"
                     << "Try again.\n\n";
+            }
+            else if (choice == CLERIC && validCleric == false)
+            {
+                std::cout
+                    << "\n\nInvalid entry.\n"
+                    << "Try again.\n\n";
+            }
+            else if (choice == WIZARD && validWizard == false)
+            {
+                std::cout
+                    << "\n\nInvalid entry.\n"
+                    << "Try again.\n\n";
+            }
+            else if (choice <= WIZARD && choice >= WARRIOR)
+            {
+                choosing = false;
+                return choice;
             }
         }
 
@@ -446,7 +482,7 @@ void print_character(void)
 {
 
     std::cout
-        << "Here's your character: \n\n"
+        << "\nHere's your character: \n\n"
         << "\nName: "
         << character::character_name
         << "\nLevel: "
