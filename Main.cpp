@@ -2,7 +2,7 @@
  * D&D Character Generator                          *
  * Javier Alonso                                    *
  * 2/15/2024 - 2/21/24                              *
- * v0.02                                            *
+ * v0.03                                            *
 *****************************************************/
 /////////////////////////////////////////////////////
 //                      To-do
@@ -503,7 +503,7 @@ void print_character(void)
         << "\nCharisma: "
         << character::statCha
         << "\n----------\n"
-        << "\nHappy Questing!\n";
+        << "\nHappy Questing!\n\n";
 
 }
 
@@ -532,6 +532,9 @@ int main(void)
     player.character_name = choose_character_name();
 
     print_character();
+
+
+    system("pause");
 
     return 0;
 }
