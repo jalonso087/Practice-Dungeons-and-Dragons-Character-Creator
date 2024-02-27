@@ -2,7 +2,7 @@
  * D&D Character Generator                          *
  * Javier Alonso                                    *
  * 2/15/2024 - 2/28/24                              *
- * v0.03                                            *
+ * v0.04                                            *
 *****************************************************/
 /////////////////////////////////////////////////////
 //                      To-do
@@ -10,9 +10,10 @@
 //1. Add an if else block to race choice to prevent invalid numerical entries
 //2. COMPLETE - Continue converting variables and functions to static where possible
 //3. COMPLETE - Disable player choosing class that isn't shown on screen
-//4. Add pointers for function parameters
+//4. DROPPED  - Add pointers for function parameters
+//5. COMPLETE - Add const to applicable variables
 // -------------Meet with Nav-------------
-//5. Long-term: Move everything except main() to a different file to avoid clutter
+//1. Long-term: Move everything except main() to a different file(s) to avoid clutter
 
 #include <iostream>
 #include <random>
@@ -48,7 +49,7 @@ protected:
 
 public:
 
-    int character_level, 
+    int character_level = 0, 
         race, 
         player_class, 
         hp,
@@ -61,185 +62,146 @@ public:
         die_method;
     
     std::string character_name;
-
-    static int random_num(int start, int max)
+    
+    character(const int starting_level)
     {
+        character_level = starting_level;
 
+        stat_generator();
+        
+        race = choose_race();
+
+        race_stat_changer(race);
+
+        player_class = choose_class();
+
+        hp = set_hp(player_class);
+
+        character_name = choose_character_name();
+    }
+
+    ~character()
+    {
+        std::cout << "Class destructing.";
+    }
+
+    static int random_num(const int start, const int max)
+    {
         int random = start + rand() % (max);
 
         return random;
-
     }
 
-    int stat_generator(void)
+    void stat_generator(void)
     {
         while (die_method != 1 && die_method != 2)
         {
-            std::cout
-                << "Which die rolling method would you like to use?"
-                << std::endl;
-            std::cout
-                << "1. 3d6"
-                << std::endl;
-            std::cout
-                << "2. 8+1d6"
-                << std::endl;
-            std::cout
-                << "Selection: ";
-            std::cin
-                >> die_method;
+            std::cout << "Which die rolling method would you like to use?" << std::endl;
+            std::cout << "1. 3d6" << std::endl;
+            std::cout << "2. 8+1d6" << std::endl;
+            std::cout << "Selection: ";
+            std::cin >> die_method;
 
             if (die_method == 1)
             {
-
-                std::cout
-                    << "\nRolling 3d6 per stat..."
-                    << std::endl;
+                std::cout << "\nRolling 3d6 per stat..." << std::endl;
 
                 statStr =
-                    random_num(1, 6)
-                    + random_num(1, 6)
-                    + random_num(1, 6);
+                        random_num(1, 6)
+                    +   random_num(1, 6)
+                    +   random_num(1, 6);
 
-                std::cout
-                    << "\nStrength: "
-                    << statStr;
+                std::cout << "\nStrength: " << statStr;
 
                 statDex =
-                    random_num(1, 6)
-                    + random_num(1, 6)
-                    + random_num(1, 6);
+                        random_num(1, 6)
+                    +   random_num(1, 6)
+                    +   random_num(1, 6);
 
-                std::cout
-                    << "\nDexterity: "
-                    << statDex;
+                std::cout << "\nDexterity: " << statDex;
 
                 statCon =
-                    random_num(1, 6)
-                    + random_num(1, 6)
-                    + random_num(1, 6);
+                        random_num(1, 6)
+                    +   random_num(1, 6)
+                    +   random_num(1, 6);
 
-                std::cout
-                    << "\nConstitution: "
-                    << statCon;
+                std::cout << "\nConstitution: " << statCon;
 
                 statInt =
-                    random_num(1, 6)
-                    + random_num(1, 6)
-                    + random_num(1, 6);
+                        random_num(1, 6)
+                    +   random_num(1, 6)
+                    +   random_num(1, 6);
 
-                std::cout
-                    << "\nIntelligence: "
-                    << statInt;
+                std::cout << "\nIntelligence: " << statInt;
 
                 statWis =
-                    random_num(1, 6)
-                    + random_num(1, 6)
-                    + random_num(1, 6);
+                        random_num(1, 6)
+                    +   random_num(1, 6)
+                    +   random_num(1, 6);
 
-                std::cout
-                    << "\nWisdom: "
-                    << statWis;
+                std::cout << "\nWisdom: " << statWis;
 
                 statCha =
-                    random_num(1, 6)
-                    + random_num(1, 6)
-                    + random_num(1, 6);
+                        random_num(1, 6)
+                    +   random_num(1, 6)
+                    +   random_num(1, 6);
 
-                std::cout
-                    << "\nCharisma: "
-                    << statCha;
+                std::cout << "\nCharisma: " << statCha;
             }
             else if (die_method == 2)
             {
 
                 std::cout << "\nRolling 8+1d6 per stat..." << std::endl;
 
-                statStr =
-                    random_num(1, 6)
-                    + 8;
+                statStr = random_num(1, 6) + 8;
 
-                std::cout
-                    << "\nStrength: "
-                    << statStr;
+                std::cout << "\nStrength: " << statStr;
 
-                statDex =
-                    random_num(1, 6)
-                    + 8;
+                statDex = random_num(1, 6) + 8;
 
-                std::cout
-                    << "\nDexterity: "
-                    << statDex;
+                std::cout << "\nDexterity: " << statDex;
 
-                statCon =
-                    random_num(1, 6)
-                    + 8;
+                statCon = random_num(1, 6) + 8;
 
-                std::cout
-                    << "\nConstitution: "
-                    << statCon;
+                std::cout << "\nConstitution: " << statCon;
 
-                statInt =
-                    random_num(1, 6)
-                    + 8;
+                statInt = random_num(1, 6) + 8;
 
-                std::cout
-                    << "\nIntelligence: "
-                    << statInt;
+                std::cout << "\nIntelligence: " << statInt;
 
-                statWis =
-                    random_num(1, 6)
-                    + 8;
+                statWis = random_num(1, 6) + 8;
 
-                std::cout
-                    << "\nWisdom: "
-                    << statWis;
+                std::cout << "\nWisdom: " << statWis;
 
-                statCha =
-                    random_num(1, 6)
-                    + 8;
+                statCha = random_num(1, 6) + 8;
 
-                std::cout
-                    << "\nCharisma: "
-                    << statCha;
+                std::cout << "\nCharisma: " << statCha;
 
 
             }
             else if (die_method < 1 || die_method > 2)
             {
-                std::cout
-                    << "\nInvalid entry. Try again.\n";
+                std::cout << "\nInvalid entry. Try again.\n";
             }
         }
-        return 0;
+ 
     }
 
-    int race_stat_changer(int race)
-    {
-        //int* ptrDex;
-        //int* ptrCha;
-        //int* ptrCon;
-        //int* ptrStr;
-        //int* ptrInt;
-        //int* ptrWis;
+    void race_stat_changer(const int race)
+    {   
+        int * ptrDex,
+            * ptrCha,
+            * ptrCon,
+            * ptrStr,
+            * ptrInt,
+            * ptrWis;
 
-        static int* ptrDex,
-                  * ptrCha,
-                  * ptrCon,
-                  * ptrStr,
-                  * ptrInt,
-                  * ptrWis;
-
-        std::cout
-            << "Altering stats as necessary..."
-            << std::endl;
+        std::cout << "Altering stats as necessary..." << std::endl;
 
         switch (race)
         {
         case(HUMAN):
-            std::cout
-                << "\nHumans require no stat changes."
-                << std::endl;
+            std::cout << "\nHumans require no stat changes." << std::endl;
             break;
         case(ELF):
             ptrDex = &statDex;
@@ -298,18 +260,18 @@ public:
         default:
             break;
         }
-        return 0;
+        
     }
 
     int choose_class(void)
     {
 
         bool choosing = true;
-        int choice;
         bool validWarrior = true;
         bool validThief = false;
         bool validCleric = false;
         bool validWizard = false;
+        int choice;
 
         while (choosing)
         {
@@ -319,31 +281,24 @@ public:
             if (statDex > 10)
             {
                 validThief = true;
-                std::cout
-                    << "2. Thief\n";
+                std::cout << "2. Thief\n";
             }
 
             if (statWis > 10 && statCha > 10)
             {
                 validCleric = true;
-                std::cout
-                    << "3. Cleric\n";
+                std::cout << "3. Cleric\n";
             }
 
             if (statInt > 10)
             {
                 validWizard = true;
-                std::cout
-                    << "4. Wizard\n";
+                std::cout << "4. Wizard\n";
             }
 
-            std::cout
-                << "Selection: ";
-
-            
+            std::cout << "Selection: ";
 
             std::cin >> choice;
-
             
              if (choice == THIEF && validThief == false)
             {
@@ -368,130 +323,112 @@ public:
                 choosing = false;
                 return choice;
             }
+            else
+             {
+                 std::cout
+                     << "\n\nInvalid entry.\n"
+                     << "Try again. \n\n";
+             }
         }
 
     }
 
-};
-
-class classes : public character
-{
-
-private:
-
-protected:
-
-public:
-
-};
-
-class races : public character
-{
-
-private:
-
-protected:
-
-public:
-
-};
-
-    //int character::character_level,
-        //character::race,
-        //character::player_class,
-        //character::hp,
-        //character::statStr,
-        //character::statDex,
-        //character::statCon,
-        //character::statInt,
-        //character::statWis,
-        //character::statCha,
-        //character::die_method;
-
-    //std::string character::character_name;
-
-
-
-
-
-
-int choose_race(void)
-{
-    int choice;
-
-    std::cout
-        << "\n\nWhich race would you like to be?"
-        << "\n1. Human"
-        << "\n2. Elf"
-        << "\n3. Dwarf"
-        << "\n4. Halfling"
-        << "\nSelection: ";
-
-    std::cin >> choice;
-
-    return choice;
-
-}
-
-int set_hp(character player, int player_class)
-{
-    int hp_range;
-    int hp;
-
-    switch (player_class)
+    int choose_race(void)
     {
-    case(1):
-        hp_range = 10;
-        hp = player.random_num(1, hp_range);
-        std::cout
-            << "\nYou have "
-            << hp
-            << " hit points!\n";
-        break;
-    case(2):
-        hp_range = 6;
-        hp = player.random_num(1, hp_range);
-        std::cout
-            << "\nYou have "
-            << hp
-            << " hit points!\n";
-        break;
-    case(3):
-        hp_range = 8;
-        hp = player.random_num(1, hp_range);
-        std::cout
-            << "\nYou have "
-            << hp
-            << " hit points!\n";
-        break;
-    case(4):
-        hp_range = 4;
-        hp = player.random_num(1, hp_range);
-        std::cout
-            << "\nYou have "
-            << hp
-            << " hit points!\n";
-        break;
-    default:
-        std::cout
-            << "That's not a class.";
+        bool choosing = true;
+        int choice;
+
+        while (choosing)
+        {
+            std::cout
+                << "\n\nWhich race would you like to be?"
+                << "\n1. Human"
+                << "\n2. Elf"
+                << "\n3. Dwarf"
+                << "\n4. Halfling"
+                << "\nSelection: ";
+
+            std::cin >> choice;
+
+            if (choice < HUMAN)
+            {
+                std::cout << "\nInvalid entry. Try again.\n";
+            }
+            else if (choice > HALFLING)
+            {
+                std::cout << "\nInvalid entry. Try again.\n";
+            }
+            else  if (choice >= 1 && choice <= 4)
+            {
+                choosing = false;
+                return choice;
+            }
+        
+        }
+
     }
 
-    return hp;
-}
+    int set_hp(const int player_class)
+    {
+        int hp_range;
+        int hp;
 
-std::string choose_character_name(void)
-{
-    std::string character;
+        switch (player_class)
+        {
+        case(1):
+            hp_range = 10;
+            hp = character::random_num(1, hp_range);
+            std::cout
+                << "\nYou have "
+                << hp
+                << " hit points!\n";
+            break;
+        case(2):
+            hp_range = 6;
+            hp = character::random_num(1, hp_range);
+            std::cout
+                << "\nYou have "
+                << hp
+                << " hit points!\n";
+            break;
+        case(3):
+            hp_range = 8;
+            hp = character::random_num(1, hp_range);
+            std::cout
+                << "\nYou have "
+                << hp
+                << " hit points!\n";
+            break;
+        case(4):
+            hp_range = 4;
+            hp = character::random_num(1, hp_range);
+            std::cout
+                << "\nYou have "
+                << hp
+                << " hit points!\n";
+            break;
+        default:
+            std::cout
+                << "That's not a class.";
+        }
 
-    std::cout
-        << "\nWhat first name will you give your character?\n\n"
-        << "Name: ";
+        return hp;
+    }
 
-    std::cin >> character;
+    std::string choose_character_name(void)
+    {
+        std::string character;
 
-    return character;
-}
+        std::cout
+            << "\nWhat first name will you give your character?\n\n"
+            << "Name: ";
+
+        std::cin >> character;
+
+        return character;
+    }
+
+};
 
 void print_character(character player)
 {
@@ -519,37 +456,22 @@ void print_character(character player)
         << player.statCha
         << "\n----------\n"
         << "\nHappy Questing!\n\n";
-
 }
 
 int main(void)
 {   
-    srand(time(NULL));  //for proper randomization in the random_num function calls
+    //for proper randomization in the random_num function calls
+    srand(time(NULL));  
 
     std::cout << "Dungeons and Dragons Character Creator" << std::endl;
 
-    character player;
-
-    //std::string character_name;
-
-    player.character_level = 1;
-   
-    player.stat_generator();
-
-    player.race = choose_race();
-
-    player.race_stat_changer(player.race);
-
-    player.player_class = player.choose_class();
-
-    player.hp = set_hp(player, player.player_class);
-
-    player.character_name = choose_character_name();
+    //constructor parameter = character_level
+    character player(1);
 
     print_character(player);
 
+    std::cin.ignore();
+    std::cin.get();
 
-    system("pause");
-
-    return 0;
+   // return 0;
 }
