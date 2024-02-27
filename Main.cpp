@@ -1,29 +1,33 @@
 /****************************************************
  * D&D Character Generator                          *
  * Javier Alonso                                    *
- * 2/15/2024 - 2/21/24                              *
+ * 2/15/2024 - 2/28/24                              *
  * v0.03                                            *
 *****************************************************/
 /////////////////////////////////////////////////////
 //                      To-do
 // /////////////////////////////////////////////////
 //1. Add an if else block to race choice to prevent invalid numerical entries
-//2. Continue converting variables and functions to static where possible
+//2. COMPLETE - Continue converting variables and functions to static where possible
 //3. COMPLETE - Disable player choosing class that isn't shown on screen
-//4. Long-term: Move everything except main() to a different file to avoid clutter
+//4. Add pointers for function parameters
+// -------------Meet with Nav-------------
+//5. Long-term: Move everything except main() to a different file to avoid clutter
 
 #include <iostream>
 #include <random>
 #include <string>
 
-//using static prepend often since we do not need the linker to look for the variable/function definitions elsewhere
+//although we do not need the linker to check elsewhere for definitions, we
+//avoid the use of static prepend in case we create multiple objects for the class
 
 class character
 {
 
 private:
-
-    const enum Race : unsigned char         //not expected to change    //unsigned char to use less memory
+   
+    //unsigned char to use less memory
+    const enum Race : unsigned char         
     {
         HUMAN = 1,
         ELF,
@@ -31,7 +35,8 @@ private:
         HALFLING
     };
 
-    const enum Class : unsigned char        //not expected to change    //unsigned char to use less memory
+    //unsigned char to use less memory
+    const enum Class : unsigned char       
     {
         WARRIOR = 1,
         THIEF,
@@ -57,7 +62,7 @@ public:
     
     std::string character_name;
 
-    int random_num(int start, int max)
+    static int random_num(int start, int max)
     {
 
         int random = start + rand() % (max);
@@ -68,135 +73,143 @@ public:
 
     int stat_generator(void)
     {
-        std::cout
-            << "Which die rolling method would you like to use?"
-            << std::endl;
-        std::cout
-            << "1. 3d6"
-            << std::endl;
-        std::cout
-            << "2. 8+1d6"
-            << std::endl;
-        std::cout
-            << "Selection: ";
-        std::cin
-            >> die_method;
-
-        if (die_method == 1)
+        while (die_method != 1 && die_method != 2)
         {
-
-            std::cout 
-                << "\nRolling 3d6 per stat..." 
+            std::cout
+                << "Which die rolling method would you like to use?"
                 << std::endl;
-
-            statStr =
-                random_num(1, 6)
-                + random_num(1, 6)
-                + random_num(1, 6);
-
             std::cout
-                << "\nStrength: "
-                << statStr;
-
-            statDex =
-                random_num(1, 6)
-                + random_num(1, 6)
-                + random_num(1, 6);
-
+                << "1. 3d6"
+                << std::endl;
             std::cout
-                << "\nDexterity: "
-                << statDex;
-
-            statCon =
-                random_num(1, 6)
-                + random_num(1, 6)
-                + random_num(1, 6);
-
+                << "2. 8+1d6"
+                << std::endl;
             std::cout
-                << "\nConstitution: "
-                << statCon;
+                << "Selection: ";
+            std::cin
+                >> die_method;
 
-            statInt =
-                random_num(1, 6)
-                + random_num(1, 6)
-                + random_num(1, 6);
+            if (die_method == 1)
+            {
 
-            std::cout
-                << "\nIntelligence: "
-                << statInt;
+                std::cout
+                    << "\nRolling 3d6 per stat..."
+                    << std::endl;
 
-            statWis =
-                random_num(1, 6)
-                + random_num(1, 6)
-                + random_num(1, 6);
+                statStr =
+                    random_num(1, 6)
+                    + random_num(1, 6)
+                    + random_num(1, 6);
 
-            std::cout
-                << "\nWisdom: "
-                << statWis;
+                std::cout
+                    << "\nStrength: "
+                    << statStr;
 
-            statCha =
-                random_num(1, 6)
-                + random_num(1, 6)
-                + random_num(1, 6);
+                statDex =
+                    random_num(1, 6)
+                    + random_num(1, 6)
+                    + random_num(1, 6);
 
-            std::cout
-                << "\nCharisma: "
-                << statCha;
-        }
-        else if (die_method == 2)
-        {
+                std::cout
+                    << "\nDexterity: "
+                    << statDex;
 
-            std::cout << "\nRolling 8+1d6 per stat..." << std::endl;
+                statCon =
+                    random_num(1, 6)
+                    + random_num(1, 6)
+                    + random_num(1, 6);
 
-            statStr =
-                random_num(1, 6)
-                + 8;
+                std::cout
+                    << "\nConstitution: "
+                    << statCon;
 
-            std::cout
-                << "\nStrength: "
-                << statStr;
+                statInt =
+                    random_num(1, 6)
+                    + random_num(1, 6)
+                    + random_num(1, 6);
 
-            statDex =
-                random_num(1, 6)
-                + 8;
+                std::cout
+                    << "\nIntelligence: "
+                    << statInt;
 
-            std::cout
-                << "\nDexterity: "
-                << statDex;
+                statWis =
+                    random_num(1, 6)
+                    + random_num(1, 6)
+                    + random_num(1, 6);
 
-            statCon =
-                random_num(1, 6)
-                + 8;
+                std::cout
+                    << "\nWisdom: "
+                    << statWis;
 
-            std::cout
-                << "\nConstitution: "
-                << statCon;
+                statCha =
+                    random_num(1, 6)
+                    + random_num(1, 6)
+                    + random_num(1, 6);
 
-            statInt =
-                random_num(1, 6)
-                + 8;
+                std::cout
+                    << "\nCharisma: "
+                    << statCha;
+            }
+            else if (die_method == 2)
+            {
 
-            std::cout
-                << "\nIntelligence: "
-                << statInt;
+                std::cout << "\nRolling 8+1d6 per stat..." << std::endl;
 
-            statWis =
-                random_num(1, 6)
-                + 8;
+                statStr =
+                    random_num(1, 6)
+                    + 8;
 
-            std::cout
-                << "\nWisdom: "
-                << statWis;
+                std::cout
+                    << "\nStrength: "
+                    << statStr;
 
-            statCha =
-                random_num(1, 6)
-                + 8;
+                statDex =
+                    random_num(1, 6)
+                    + 8;
 
-            std::cout
-                << "\nCharisma: "
-                << statCha;
+                std::cout
+                    << "\nDexterity: "
+                    << statDex;
+
+                statCon =
+                    random_num(1, 6)
+                    + 8;
+
+                std::cout
+                    << "\nConstitution: "
+                    << statCon;
+
+                statInt =
+                    random_num(1, 6)
+                    + 8;
+
+                std::cout
+                    << "\nIntelligence: "
+                    << statInt;
+
+                statWis =
+                    random_num(1, 6)
+                    + 8;
+
+                std::cout
+                    << "\nWisdom: "
+                    << statWis;
+
+                statCha =
+                    random_num(1, 6)
+                    + 8;
+
+                std::cout
+                    << "\nCharisma: "
+                    << statCha;
 
 
+            }
+            else if (die_method < 1 || die_method > 2)
+            {
+                std::cout
+                    << "\nInvalid entry. Try again.\n";
+            }
         }
         return 0;
     }
