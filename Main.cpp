@@ -23,11 +23,7 @@ class character
 
 private:
 
-protected:
-
-public:
-
-    enum Race 
+    const enum Race : unsigned char         //not expected to change    //unsigned char to use less memory
     {
         HUMAN = 1,
         ELF,
@@ -35,7 +31,7 @@ public:
         HALFLING
     };
 
-    enum Class
+    const enum Class : unsigned char        //not expected to change    //unsigned char to use less memory
     {
         WARRIOR = 1,
         THIEF,
@@ -43,21 +39,25 @@ public:
         WIZARD
     };
 
-    static int  character_level, 
-                race, 
-                player_class, 
-                hp,
-                statStr,
-                statDex,
-                statCon,
-                statInt,
-                statWis,
-                statCha,
-                die_method;
-    
-    static std::string character_name;
+protected:
 
-    static int random_num(int start, int max)
+public:
+
+    int character_level, 
+        race, 
+        player_class, 
+        hp,
+        statStr,
+        statDex,
+        statCon,
+        statInt,
+        statWis,
+        statCha,
+        die_method;
+    
+    std::string character_name;
+
+    int random_num(int start, int max)
     {
 
         int random = start + rand() % (max);
@@ -85,7 +85,9 @@ public:
         if (die_method == 1)
         {
 
-            std::cout << "\nRolling 3d6 per stat..." << std::endl;
+            std::cout 
+                << "\nRolling 3d6 per stat..." 
+                << std::endl;
 
             statStr =
                 random_num(1, 6)
@@ -199,7 +201,7 @@ public:
         return 0;
     }
 
-    static int race_stat_changer(int race)
+    int race_stat_changer(int race)
     {
         //int* ptrDex;
         //int* ptrCha;
@@ -286,7 +288,7 @@ public:
         return 0;
     }
 
-    static int choose_class(void)
+    int choose_class(void)
     {
 
         bool choosing = true;
@@ -381,19 +383,19 @@ public:
 
 };
 
-    int character::character_level,
-        character::race,
-        character::player_class,
-        character::hp,
-        character::statStr,
-        character::statDex,
-        character::statCon,
-        character::statInt,
-        character::statWis,
-        character::statCha,
-        character::die_method;
+    //int character::character_level,
+        //character::race,
+        //character::player_class,
+        //character::hp,
+        //character::statStr,
+        //character::statDex,
+        //character::statCon,
+        //character::statInt,
+        //character::statWis,
+        //character::statCha,
+        //character::die_method;
 
-    std::string character::character_name;
+    //std::string character::character_name;
 
 
 
@@ -418,7 +420,7 @@ int choose_race(void)
 
 }
 
-int set_hp(int player_class)
+int set_hp(character player, int player_class)
 {
     int hp_range;
     int hp;
@@ -427,7 +429,7 @@ int set_hp(int player_class)
     {
     case(1):
         hp_range = 10;
-        hp = character::random_num(1, hp_range);
+        hp = player.random_num(1, hp_range);
         std::cout
             << "\nYou have "
             << hp
@@ -435,7 +437,7 @@ int set_hp(int player_class)
         break;
     case(2):
         hp_range = 6;
-        hp = character::random_num(1, hp_range);
+        hp = player.random_num(1, hp_range);
         std::cout
             << "\nYou have "
             << hp
@@ -443,7 +445,7 @@ int set_hp(int player_class)
         break;
     case(3):
         hp_range = 8;
-        hp = character::random_num(1, hp_range);
+        hp = player.random_num(1, hp_range);
         std::cout
             << "\nYou have "
             << hp
@@ -451,7 +453,7 @@ int set_hp(int player_class)
         break;
     case(4):
         hp_range = 4;
-        hp = character::random_num(1, hp_range);
+        hp = player.random_num(1, hp_range);
         std::cout
             << "\nYou have "
             << hp
@@ -478,30 +480,30 @@ std::string choose_character_name(void)
     return character;
 }
 
-void print_character(void)
+void print_character(character player)
 {
 
     std::cout
         << "\nHere's your character: \n\n"
         << "\nName: "
-        << character::character_name
+        << player.character_name
         << "\nLevel: "
-        << character::character_level
+        << player.character_level
         << "\nHP: "
-        << character::hp
+        << player.hp
         << "\n---Stats---"
         << "\nStrength: "
-        << character::statStr
+        << player.statStr
         << "\nDexterity: "
-        << character::statDex
+        << player.statDex
         << "\nConstitution: "
-        << character::statCon
+        << player.statCon
         << "\nIntelligence: "
-        << character::statInt
+        << player.statInt
         << "\nWisdom: "
-        << character::statWis
+        << player.statWis
         << "\nCharisma: "
-        << character::statCha
+        << player.statCha
         << "\n----------\n"
         << "\nHappy Questing!\n\n";
 
@@ -527,11 +529,11 @@ int main(void)
 
     player.player_class = player.choose_class();
 
-    player.hp = set_hp(player.player_class);
+    player.hp = set_hp(player, player.player_class);
 
     player.character_name = choose_character_name();
 
-    print_character();
+    print_character(player);
 
 
     system("pause");
